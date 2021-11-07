@@ -1,5 +1,7 @@
 - const getInputName = (property) => `data[${property}]`
 - const getInputId = (property) => `data_${property}`
+- const getLabelName = (property) => t(`views.users.new.${property}`)
+- const buildRoute = (id) => `${route('users')}/${id}`
 
 mixin formFor(entity = null)
   form&attributes(attributes)
@@ -12,7 +14,7 @@ mixin input(entity, propertyName, errors = {})
   .mb-3(class=(errors[propertyName] && 'has-danger'))
     label(
       for= inputId
-    )= propertyName
+    )= getLabelName(propertyName)
     input(
       id= inputId
       name=getInputName(propertyName)

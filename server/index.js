@@ -5,12 +5,15 @@ import path from 'path';
 import fastify from 'fastify';
 import fastifyStatic from 'fastify-static';
 import fastifyErrorPage from 'fastify-error-page';
+import pointOfView from 'point-of-view';
 import fastifyFormbody from 'fastify-formbody';
 import fastifySecureSession from 'fastify-secure-session';
 import fastifyPassport from 'fastify-passport';
 import fastifySensible from 'fastify-sensible';
+// import fastifyFlash from 'fastify-flash';
 import { plugin as fastifyReverseRoutes } from 'fastify-reverse-routes';
-import pointOfView from 'point-of-view';
+import fastifyMethodOverride from 'fastify-method-override';
+import fastifyObjectionjs from 'fastify-objectionjs';
 import qs from 'qs';
 import Pug from 'pug';
 import i18next from 'i18next';
@@ -20,9 +23,11 @@ import webpackConfig from '../webpack.config.babel.js';
 
 import addRoutes from './routes/index.js';
 import getHelpers from './helpers/index.js';
+import knexConfig from '../knexfile.js';
+import models from './models/index.js';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
 
-dotenv.config(); // set configuration options .env SESSION_KEY
+dotenv.config();
 const mode = process.env.NODE_ENV || 'development';
 const isProduction = mode === 'production';
 const isDevelopment = mode === 'development';
@@ -107,6 +112,12 @@ const registerPlugins = (app) => {
     },
   // @ts-ignore
   )(...args));
+
+  app.register(fastifyMethodOverride);
+  app.register(fastifyObjectionjs, {
+    knexConfig: knexConfig[mode],
+    models,
+  });
 };
 
 export default () => {

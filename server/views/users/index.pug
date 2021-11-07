@@ -5,11 +5,18 @@ block content
     thead
       tr
         th= t('views.users.id')
+        th= t('views.users.fullName')
         th= t('views.users.email')
         th= t('views.users.createdAt')
     tbody
       each user in users
         tr
           td= user.id
+          td= `${user.firstName} ${user.lastName}`
           td= user.email
           td= formatDate(user.createdAt)
+          td
+            a(href=`${buildRoute(user.id)}/edit`)= t('views.users.edit.edit')
+            form(action=buildRoute(user.id) method='post')
+              input(name='_method' type='hidden' value='delete')
+              input.btn.btn-link(type='submit' value= t('views.users.edit.delete'))

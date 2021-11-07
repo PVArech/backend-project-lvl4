@@ -25,5 +25,9 @@ export default (app) => {
         reply.render('users/new', { user: req.body.data, errors: data });
         return reply;
       }
+    })
+    .get('/users/1/edit', { name: 'editUser' }, (req, reply) => {
+      console.log('user id edit', req);
+      reply.render('users/edit', {});
     });
 };

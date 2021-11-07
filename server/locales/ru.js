@@ -38,11 +38,26 @@ module.exports = {
       },
       users: {
         id: 'ID',
+        fullName: 'Полное имя',
         email: 'Email',
         createdAt: 'Дата создания',
         new: {
+          firstName: 'Имя',
+          lastName: 'Фамилия',
+          email: 'Email',
+          password: 'Пароль',
           submit: 'Сохранить',
           signUp: 'Регистрация',
+        },
+        edit: {
+          edit: 'Изменить',
+          delete: 'Удалить',
+          firstName: 'Имя',
+          lastName: 'Фамилия',
+          email: 'Email',
+          password: 'Пароль',
+          submit: 'Изменить',
+          signUp: 'Изменение пользователя',
         },
       },
       welcome: {

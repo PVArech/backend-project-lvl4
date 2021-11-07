@@ -11,9 +11,16 @@ module.exports = {
     path: path.join(__dirname, 'dist', 'public'),
     publicPath: '/assets/',
   },
+  // devServer: {
+  //   host: 'localhost',
+  //   static: './',
+  //   port: 8080,
+  //   compress: true,
+  // },
   devServer: {
     host: 'localhost',
-    static: './',
+    // contentBase: path.join(__dirname, 'dist', 'public'),
+    // publicPath: '/assets/',
     port: 8080,
     compress: true,
   },
