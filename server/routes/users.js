@@ -25,12 +25,26 @@ export default (app) => {
         reply.render('users/new', { user: req.body.data, errors: data });
         return reply;
       }
-    }) // GET /users/:id/edit - страница редактирования пользователя
+    })
+    // DELETE /users/:id - удаление пользователя
+    .delete('/users/:idUser', { preValidation: app.authenticate }, async (req, reply) => {
+      const { idUser } = req.params;
+      const { id } = req.user;
+      if (Number(idUser) !== id) {
+        req.flash('error', i18next.t('flash.users.delete.error'));
+        return reply.redirect(app.reverse('users'));
+      }
+      await app.objection.models.user.query().where('id', idUser).del();
+      req.logOut();
+      req.flash('info', i18next.t('flash.users.delete.success'));
+      reply.redirect(app.reverse('users'));
+    })
+    // GET /users/:id/edit - страница редактирования пользователя
     .get('/users/:idUser/edit', async (req, reply) => {
       const { idUser } = req.params;
       const [user] = await app.objection.models.user.query().where('id', idUser);
-      user.password = user.passwordDigest;
-      console.log('%%%%%%%%%%%%', user, user.passwordDigest);
+      // user.password = user.passwordDigest;
+      console.log('%%%%%%%%%%%%', user);
       reply.render('users/edit', { user });
       return reply;
     });
