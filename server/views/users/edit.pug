@@ -4,9 +4,10 @@ block header
   = t('views.users.edit.signUp')
 
 block content
-  +formFor()(action=route('users') method='post')
+  +formFor()(action=buildRoute(user.id) method='post')
     +input(user, 'firstName', errors)(type="text")
     +input(user, 'lastName', errors)(type="text")
     +input(user, 'email', errors)(type="text")
     +input(user, 'password', errors)(type="password")
+    input(name='_method' type='hidden' value='patch')
     +submit(user)(value=t('views.users.edit.submit'))
