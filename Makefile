@@ -10,3 +10,5 @@ start-frontend:
 	npx webpack serve
 lint:
 	npx eslint .
+test:
+	npm test -s

@@ -10,8 +10,10 @@ export default (app) => {
       return reply;
     })
     .get('/users/new', { name: 'newUser' }, (req, reply) => {
+      console.log('@@@@ /users/new');
       const user = new app.objection.models.user();
       reply.render('users/new', { user });
+      console.log('@@@@ /users/new', reply.statusCode);
     })
     .get('/users/:id/edit', { preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
@@ -24,13 +26,16 @@ export default (app) => {
       return reply;
     })
     .post('/users', async (req, reply) => {
+      console.log('Start post/users');
       try {
         const user = await app.objection.models.user.fromJson(req.body.data);
         await app.objection.models.user.query().insert(user);
         req.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect(app.reverse('root'));
+        console.log('BOOM QQQQQQQQQQQQQQQQQQQQQQQQQ');
         return reply;
       } catch ({ data }) {
+        console.log('Start catch post/users');
         req.flash('error', i18next.t('flash.users.create.error'));
         reply.render('users/new', { user: req.body.data, errors: data });
         return reply;
