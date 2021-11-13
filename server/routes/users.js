@@ -10,10 +10,8 @@ export default (app) => {
       return reply;
     })
     .get('/users/new', { name: 'newUser' }, (req, reply) => {
-      console.log('@@@@ /users/new');
       const user = new app.objection.models.user();
       reply.render('users/new', { user });
-      console.log('@@@@ /users/new', reply.statusCode);
     })
     .get('/users/:id/edit', { preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
@@ -26,22 +24,19 @@ export default (app) => {
       return reply;
     })
     .post('/users', async (req, reply) => {
-      console.log('Start post/users');
       try {
         const user = await app.objection.models.user.fromJson(req.body.data);
         await app.objection.models.user.query().insert(user);
         req.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect(app.reverse('root'));
-        console.log('BOOM QQQQQQQQQQQQQQQQQQQQQQQQQ');
         return reply;
       } catch ({ data }) {
-        console.log('Start catch post/users');
         req.flash('error', i18next.t('flash.users.create.error'));
         reply.render('users/new', { user: req.body.data, errors: data });
         return reply;
       }
     })
-    .patch('/users/:id', async (req, reply) => {
+    .patch('/users/:id', { preValidation: app.authenticate }, async (req, reply) => {
       try {
         const { id } = req.params;
         const changes = await app.objection.models.user.fromJson(req.body.data);
@@ -51,6 +46,7 @@ export default (app) => {
         reply.redirect(app.reverse('users'));
         return reply;
       } catch ({ data }) {
+        console.log('error', data);
         req.flash('error', i18next.t('flash.users.update.error'));
         reply.render('users/edit', { user: { ...req.body.data, ...req.params }, errors: data });
         return reply;
