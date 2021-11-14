@@ -33,6 +33,16 @@ describe('test CRUD', () => {
 
   it('test create', async () => {
     const params = testData.users.new;
+
+    const responseError = await app.inject({
+      method: 'POST',
+      url: app.reverse('users'),
+      payload: {
+        data: _.omit(params, 'password'),
+      },
+    });
+    expect(responseError.statusCode).toBe(200);
+
     const response = await app.inject({
       method: 'POST',
       url: app.reverse('users'),
@@ -41,6 +51,7 @@ describe('test CRUD', () => {
       },
     });
     expect(response.statusCode).toBe(302);
+
     const expected = {
       ..._.omit(params, 'password'),
       passwordDigest: encrypt(params.password),
@@ -95,6 +106,16 @@ describe('test CRUD', () => {
       cookies: cookie,
     });
     expect(response.statusCode).toBe(200);
+
+    const responseEditError = await app.inject({
+      method: 'patch',
+      url: `${app.reverse('users')}/${currentUser.id}`,
+      payload: {
+        data: _.omit(testData.users.edited, 'firstName'),
+      },
+      cookies: cookie,
+    });
+    expect(responseEditError.statusCode).toBe(200);
 
     const responseEdit = await app.inject({
       method: 'patch',
