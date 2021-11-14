@@ -77,6 +77,18 @@ describe('test CRUD', () => {
     });
     expect(response.statusCode).toBe(200);
 
+    const responseSignInError = await app.inject({
+      method: 'POST',
+      url: app.reverse('session'),
+      payload: {
+        data: {
+          email: 'kulas87@outlook.com',
+          password: 'O6AvLIQL1cbzrre',
+        },
+      },
+    });
+    expect(responseSignInError.statusCode).toBe(200);
+
     const responseSignIn = await app.inject({
       method: 'POST',
       url: app.reverse('session'),
