@@ -4,9 +4,7 @@
 name: eslint-test  
 
 # Trigger the workflow on push or pull request
-on:
-  - push
-  - pull_request
+on: [push, pull_request]
 
 jobs:
   build:
