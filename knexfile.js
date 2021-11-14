@@ -1,11 +1,21 @@
 // @ts-check
 
 const path = require('path');
+const dotenv = require('dotenv');
+const pg = require('pg');
+
+dotenv.config();
+
+if (process.env.DATABASE_URL) {
+  pg.defaults.ssl = { rejectUnauthorized: false };
+}
 
 const migrations = {
   directory: path.join(__dirname, 'server', 'migrations'),
 };
 
+console.log('environment', process.env.DATABASE_URL);
+console.log('environment', process.env.NODE_ENV);
 module.exports = {
   development: {
     client: 'sqlite3',
@@ -24,13 +34,8 @@ module.exports = {
   },
   production: {
     client: 'pg',
-    connection: {
-      host: 'ec2-54-224-142-15.compute-1.amazonaws.com',
-      database: 'df31cf8909etsa',
-      user: 'sutintnudtdrah',
-      port: '5432',
-      password: 'd9e98f1c60443b5c6afc3c9f5cbad481be8af6c82bc677a7c4a0914dcce40b2a',
-    },
+    connection: process.env.DATABASE_URL,
+    pool: { min: 2, max: 10 },
     migrations,
   },
 };
