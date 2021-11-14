@@ -84,6 +84,14 @@ const addHooks = (app) => {
   });
 };
 
+const authenticate = (app) => fastifyPassport.authenticate(
+  'form',
+  {
+    failureRedirect: app.reverse('root'),
+    failureFlash: i18next.t('flash.authError'),
+  },
+);
+
 const registerPlugins = (app) => {
   app.register(fastifySensible);
   app.register(fastifyErrorPage);
@@ -104,14 +112,8 @@ const registerPlugins = (app) => {
   app.register(fastifyPassport.initialize());
   app.register(fastifyPassport.secureSession());
   app.decorate('fp', fastifyPassport);
-  app.decorate('authenticate', (...args) => fastifyPassport.authenticate(
-    'form',
-    {
-      failureRedirect: app.reverse('root'),
-      failureFlash: i18next.t('flash.authError'),
-    },
   // @ts-ignore
-  )(...args));
+  app.decorate('authenticate', (...args) => authenticate(app)(...args));
 
   app.register(fastifyMethodOverride);
   app.register(fastifyObjectionjs, {

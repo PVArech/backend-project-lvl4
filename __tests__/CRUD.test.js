@@ -5,7 +5,7 @@ import getApp from '../server/index.js';
 import { getTestData, prepareData } from './helpers/index.js';
 import encrypt from '../server/lib/secure.js';
 
-describe('test session', () => {
+describe('test CRUD', () => {
   let app;
   let knex;
   let models;
@@ -21,6 +21,14 @@ describe('test session', () => {
     await prepareData(app);
     models = app.objection.models;
     currentUser = await models.user.query().findOne({ email });
+  });
+
+  it('test new', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('newUser'),
+    });
+    expect(response.statusCode).toBe(200);
   });
 
   it('test create', async () => {
