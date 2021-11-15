@@ -27,11 +27,26 @@ module.exports = {
           success: 'Пользователь успешно удалён',
         },
       },
+      statuses: {
+        create: {
+          success: 'Статус успешно создан',
+          error: 'Не удалось создать статус',
+        },
+        update: {
+          success: 'Статус успешно изменён',
+          error: 'Не удалось изменить статус',
+        },
+        delete: {
+          success: 'Статус успешно удалён',
+          error: 'Не удалось удалить статус',
+        },
+      },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
     },
     layouts: {
       application: {
         users: 'Пользователи',
+        statuses: 'Статусы',
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
@@ -44,28 +59,41 @@ module.exports = {
           submit: 'Войти',
         },
       },
+      labels: {
+        firstName: 'Имя',
+        lastName: 'Фамилия',
+        email: 'Email',
+        password: 'Пароль',
+        name: 'Наименование',
+        edit: 'Изменить',
+        delete: 'Удалить',
+      },
       users: {
         id: 'ID',
         fullName: 'Полное имя',
         email: 'Email',
         createdAt: 'Дата создания',
         new: {
-          firstName: 'Имя',
-          lastName: 'Фамилия',
-          email: 'Email',
-          password: 'Пароль',
-          submit: 'Сохранить',
           signUp: 'Регистрация',
+          submit: 'Сохранить',
         },
         edit: {
-          edit: 'Изменить',
-          delete: 'Удалить',
-          firstName: 'Имя',
-          lastName: 'Фамилия',
-          email: 'Email',
-          password: 'Пароль',
-          submit: 'Изменить',
           signUp: 'Изменение пользователя',
+          submit: 'Изменить',
+        },
+      },
+      statuses: {
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        newStatus: 'Создать статус',
+        new: {
+          signUp: 'Создание статуса',
+          submit: 'Создать',
+        },
+        edit: {
+          signUp: 'Изменение статуса',
+          submit: 'Изменить',
         },
       },
       welcome: {

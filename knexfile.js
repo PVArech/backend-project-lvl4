@@ -14,8 +14,10 @@ const migrations = {
   directory: path.join(__dirname, 'server', 'migrations'),
 };
 
-console.log('environment', process.env.DATABASE_URL);
-console.log('environment', process.env.NODE_ENV);
+const pathSeeds = {
+  directory: path.join(__dirname, 'server', 'migrations', 'seeds'),
+};
+
 module.exports = {
   development: {
     client: 'sqlite3',
@@ -24,6 +26,7 @@ module.exports = {
     },
     useNullAsDefault: true,
     migrations,
+    seeds: pathSeeds,
     debug: true,
   },
   test: {
@@ -35,7 +38,7 @@ module.exports = {
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
-    pool: { min: 2, max: 10 },
     migrations,
+    seeds: pathSeeds,
   },
 };

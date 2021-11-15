@@ -1,7 +1,7 @@
 - const getInputName = (property) => `data[${property}]`
 - const getInputId = (property) => `data_${property}`
-- const getLabelName = (property) => t(`views.users.new.${property}`)
-- const buildRoute = (id) => `${route('users')}/${id}`
+- const getLabelName = (property) => t(`views.labels.${property}`)
+- const buildRoute = (id, name) => `${route(name)}/${id}`
 
 mixin formFor(entity = null)
   form&attributes(attributes)
