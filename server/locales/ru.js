@@ -53,26 +53,25 @@ module.exports = {
       },
     },
     views: {
+      labels: {
+        id: 'ID',
+        fullName: 'Полное имя',
+        firstName: 'Имя',
+        lastName: 'Фамилия',
+        email: 'Email',
+        password: 'Пароль',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        edit: 'Изменить',
+        delete: 'Удалить',
+      },
       session: {
         new: {
           signIn: 'Вход',
           submit: 'Войти',
         },
       },
-      labels: {
-        firstName: 'Имя',
-        lastName: 'Фамилия',
-        email: 'Email',
-        password: 'Пароль',
-        name: 'Наименование',
-        edit: 'Изменить',
-        delete: 'Удалить',
-      },
       users: {
-        id: 'ID',
-        fullName: 'Полное имя',
-        email: 'Email',
-        createdAt: 'Дата создания',
         new: {
           signUp: 'Регистрация',
           submit: 'Сохранить',
@@ -83,9 +82,6 @@ module.exports = {
         },
       },
       statuses: {
-        id: 'ID',
-        name: 'Наименование',
-        createdAt: 'Дата создания',
         newStatus: 'Создать статус',
         new: {
           signUp: 'Создание статуса',
