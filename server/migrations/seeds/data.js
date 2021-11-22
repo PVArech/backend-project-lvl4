@@ -1,22 +1,4 @@
-exports.seed = function(knex) {
-    // Deletes ALL existing entries
-    return knex('tasks').del()
-      .then(() => {
-        return knex('statuses').del();  
-      })
-      .then(() => {
-        return knex('users').del();  
-      })
-      .then(() => {
-        return knex('statuses').insert([
-          {id: 1, name: 'новый'},
-          {id: 2, name: 'в работе'},
-          {id: 3, name: 'на тестировании'},
-          {id: 4, name: 'завершен'},
-        ]);
-      })
-      .then(() => {
-        return knex('users').insert([
+const users = [
           {
             id: 1,
             first_name: 'Вячеслав',
@@ -31,10 +13,16 @@ exports.seed = function(knex) {
             email: '11@11.by',
             password_digest: '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
           }
-        ]);
-      })
-      .then(() => {
-        return knex('tasks').insert([
+        ];
+
+const statuses = [
+          {id: 1, name: 'новый'},
+          {id: 2, name: 'в работе'},
+          {id: 3, name: 'на тестировании'},
+          {id: 4, name: 'завершен'},
+        ];
+
+const tasks = [
           {
             id: 1, 
             name: 'Task 1',
@@ -51,6 +39,24 @@ exports.seed = function(knex) {
             creator_id: 2,
             executor_id: null,
           },
-        ]);
+        ];
+
+exports.seed = function(knex) {
+    // Deletes ALL existing entries
+    return knex('tasks').del()
+      .then(() => {
+        return knex('statuses').del();  
+      })
+      .then(() => {
+        return knex('users').del();  
+      })
+      .then(() => {
+        return knex('statuses').insert(statuses);
+      })
+      .then(() => {
+        return knex('users').insert(users);
+      })
+      .then(() => {
+        return knex('tasks').insert(tasks);
       });
   };

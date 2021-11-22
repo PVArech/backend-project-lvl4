@@ -27,24 +27,21 @@ export default class Task extends BaseModel {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: 'Status',
         join: {
-          from: 'tasks.statusId',
-          to: 'statuses.id',
+          from: 'tasks.statusId', to: 'statuses.id',
         },
       },
       creatorUser: {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: 'User',
         join: {
-          from: 'tasks.creatorId',
-          to: 'users.id',
+          from: 'tasks.creatorId', to: 'users.id',
         },
       },
       executorUser: {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: 'User',
         join: {
-          from: 'tasks.executorId',
-          to: 'users.id',
+          from: 'tasks.executorId', to: 'users.id',
         },
       },
     };
