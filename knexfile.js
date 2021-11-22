@@ -28,12 +28,22 @@ module.exports = {
     migrations,
     seeds: pathSeeds,
     debug: true,
+    pool: {
+      afterCreate: (conn, cb) => {
+        conn.run('PRAGMA foreign_keys = ON', cb);
+      },
+    },
   },
   test: {
     client: 'sqlite3',
     connection: ':memory:',
     useNullAsDefault: true,
     migrations,
+    pool: {
+      afterCreate: (conn, cb) => {
+        conn.run('PRAGMA foreign_keys = ON', cb);
+      },
+    },
   },
   production: {
     client: 'pg',

@@ -5,7 +5,7 @@ import getApp from '../server/index.js';
 import { getTestData, prepareData } from './helpers/index.js';
 import encrypt from '../server/lib/secure.js';
 
-describe('test CRUD', () => {
+describe('test: CRUD user', () => {
   let app;
   let knex;
   let models;
@@ -23,7 +23,7 @@ describe('test CRUD', () => {
     currentUser = await models.user.query().findOne({ email });
   });
 
-  it('test new', async () => {
+  it('test: go new user', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('newUser'),
@@ -31,7 +31,7 @@ describe('test CRUD', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  it('test create', async () => {
+  it('test: create user', async () => {
     const params = testData.users.new;
 
     const responseError = await app.inject({
@@ -60,7 +60,7 @@ describe('test CRUD', () => {
     expect(user).toMatchObject(expected);
   });
 
-  it('test read', async () => {
+  it('test: read users', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('users'),
@@ -70,7 +70,7 @@ describe('test CRUD', () => {
     expect(bases).toHaveLength(4);
   });
 
-  it('test sign in', async () => {
+  it('test: sign in', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('newSession'),
@@ -103,25 +103,25 @@ describe('test CRUD', () => {
     cookie = { [name]: value };
   });
 
-  it('test edit not authentication', async () => {
+  it('test: edit not authentication user', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: `${app.reverse('users')}/${currentUser.id}/edit`,
+      url: `${app.reverse('editUser', { id: currentUser.id })}`,
     });
     expect(response.statusCode).toBe(302);
   });
 
-  it('test edit', async () => {
+  it('test: edit user', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: `${app.reverse('users')}/${currentUser.id}/edit`,
+      url: `${app.reverse('editUser', { id: currentUser.id })}`,
       cookies: cookie,
     });
     expect(response.statusCode).toBe(200);
 
     const responseEditError = await app.inject({
-      method: 'patch',
-      url: `${app.reverse('users')}/${currentUser.id}`,
+      method: 'PATCH',
+      url: `${app.reverse('user', { id: currentUser.id })}`,
       payload: {
         data: _.omit(testData.users.edited, 'firstName'),
       },
@@ -130,8 +130,8 @@ describe('test CRUD', () => {
     expect(responseEditError.statusCode).toBe(200);
 
     const responseEdit = await app.inject({
-      method: 'patch',
-      url: `${app.reverse('users')}/${currentUser.id}`,
+      method: 'PATCH',
+      url: `${app.reverse('user', { id: currentUser.id })}`,
       payload: {
         data: testData.users.edited,
       },
@@ -142,19 +142,19 @@ describe('test CRUD', () => {
     expect(user).toHaveProperty('firstName', 'Gleb');
   });
 
-  it('test edit other user', async () => {
+  it('test: edit other user', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: `${app.reverse('users')}/${currentUser.id - 1}/edit`,
+      url: `${app.reverse('editUser', { id: currentUser.id - 1 })}`,
       cookies: cookie,
     });
     expect(response.statusCode).toBe(302);
   });
 
-  it('test delete not authentication', async () => {
+  it('test: delete not authentication user', async () => {
     const response = await app.inject({
-      method: 'delete',
-      url: `${app.reverse('users')}/${currentUser.id}`,
+      method: 'DELETE',
+      url: `${app.reverse('user', { id: currentUser.id })}`,
       payload: {
         data: testData.users.new,
       },
@@ -164,10 +164,10 @@ describe('test CRUD', () => {
     expect(bases).toHaveLength(4);
   });
 
-  it('test delete other user', async () => {
+  it('test: delete other user', async () => {
     const response = await app.inject({
-      method: 'delete',
-      url: `${app.reverse('users')}/${currentUser.id - 1}`,
+      method: 'DELETE',
+      url: `${app.reverse('user', { id: currentUser.id - 1 })}`,
       payload: {
         data: testData.users.new,
       },
@@ -178,10 +178,43 @@ describe('test CRUD', () => {
     expect(bases).toHaveLength(4);
   });
 
-  it('test delete', async () => {
+  it('test: !delete user, existing in task', async () => {
+    const responsePost = await app.inject({
+      method: 'POST',
+      url: app.reverse('tasks'),
+      payload: {
+        data: testData.tasks.new,
+      },
+      cookies: cookie,
+    });
+    expect(responsePost.statusCode).toBe(302);
+
     const response = await app.inject({
-      method: 'delete',
-      url: `${app.reverse('users')}/${currentUser.id}`,
+      method: 'DELETE',
+      url: `${app.reverse('user', { id: currentUser.id })}`,
+      payload: {
+        data: testData.users.new,
+      },
+      cookies: cookie,
+    });
+    expect(response.statusCode).toBe(200);
+    let bases = await models.user.query();
+    expect(bases).toHaveLength(4);
+
+    const responseDelTask = await app.inject({
+      method: 'DELETE',
+      url: `${app.reverse('task', { id: 4 })}`,
+      cookies: cookie,
+    });
+    expect(responseDelTask.statusCode).toBe(302);
+    bases = await models.task.query();
+    expect(bases).toHaveLength(3);
+  });
+
+  it('test: delete', async () => {
+    const response = await app.inject({
+      method: 'DELETE',
+      url: `${app.reverse('user', { id: currentUser.id })}`,
       payload: {
         data: testData.users.new,
       },
@@ -192,7 +225,7 @@ describe('test CRUD', () => {
     expect(bases).toHaveLength(3);
   });
 
-  it('test sign out', async () => {
+  it('test: sign out', async () => {
     const responseSignOut = await app.inject({
       method: 'DELETE',
       url: app.reverse('session'),

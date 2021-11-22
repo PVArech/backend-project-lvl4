@@ -19,4 +19,6 @@ test:
 	npm test -s
 test-coverage:
 	npm test -- --coverage --coverageProvider=v8
+test-updateSnapshot:
+	npm test --updateSnapshot
 	

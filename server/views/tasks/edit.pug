@@ -1,0 +1,13 @@
+extends ../layouts/application.pug
+
+block header
+  = t('views.tasks.edit.signUp')
+
+block content
+  +formFor()(action=route('task', { id: task.id }) method='post')
+    +input(task, 'name', errors)(type="text")
+    +textarea(task, 'description')
+    +select(task, statuses, 'statusId', errors)
+    +select(task, users, 'executorId')
+    input(name='_method' type='hidden' value='patch')
+    +submit(task)(value=t('views.tasks.edit.submit'))

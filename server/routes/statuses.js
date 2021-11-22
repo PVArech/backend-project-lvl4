@@ -11,7 +11,7 @@ export default (app) => {
       const status = new app.objection.models.status();
       reply.render('statuses/new', { status });
     })
-    .get('/statuses/:id/edit', { preValidation: app.authenticate }, async (req, reply) => {
+    .get('/statuses/:id/edit', { name: 'editStatus', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
       const [status] = await app.objection.models.status.query().where({ id });
       reply.render('statuses/edit', { status });
@@ -30,7 +30,7 @@ export default (app) => {
         return reply;
       }
     })
-    .patch('/statuses/:id', { preValidation: app.authenticate }, async (req, reply) => {
+    .patch('/statuses/:id', { name: 'status', preValidation: app.authenticate }, async (req, reply) => {
       try {
         const { id } = req.params;
         const changes = await app.objection.models.status.fromJson(req.body.data);
@@ -46,9 +46,16 @@ export default (app) => {
       }
     })
     .delete('/statuses/:id', { preValidation: app.authenticate }, async (req, reply) => {
-      const { id } = req.params;
-      await app.objection.models.status.query().where({ id }).del();
-      req.flash('info', i18next.t('flash.statuses.delete.success'));
-      return reply.redirect(app.reverse('statuses'));
+      try {
+        const { id } = req.params;
+        await app.objection.models.status.query().deleteById(id);
+        req.flash('info', i18next.t('flash.statuses.delete.success'));
+        return reply.redirect(app.reverse('statuses'));
+      } catch ({ data }) {
+        req.flash('error', i18next.t('flash.statuses.delete.error'));
+        const statuses = await app.objection.models.status.query();
+        reply.render('statuses/index', { statuses });
+        return reply;
+      }
     });
 };

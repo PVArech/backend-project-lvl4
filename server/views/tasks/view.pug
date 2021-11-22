@@ -1,0 +1,34 @@
+extends ../layouts/application.pug
+
+block header  
+
+block content
+  .card
+    .card-header.bg-secondary.text-white
+      h2= task.name
+    .card-body.bg-light
+      p= task.description
+      hr
+      .container
+        .row.p-1
+          .col= t('views.labels.creator')
+          .col= task.creatorUser.fullName()
+        .row.p-1
+          .col= t('views.labels.executor')
+          if task.executorUser
+            .col= task.executorUser.fullName()
+          else
+            .col= null
+        .row.p-1
+          .col= t('views.labels.status')
+          .col= task.status.name
+        .row.p-1
+          .col= t('views.labels.createdAt')
+          .col= task.createdAt
+
+        .row.p-1
+          .col
+            a(href=`${route('editTask', {id: task.id})}`)= t('views.labels.edit')
+            +formFor()(action=route('task', { id: task.id }) method='post')            
+              input(name='_method' type='hidden' value='delete')
+              input.btn.btn-link(type='submit' value= t('views.labels.delete'))  

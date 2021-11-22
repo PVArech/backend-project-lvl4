@@ -1,13 +1,14 @@
 // @ts-check
 
-import { Model } from 'objection';
+// import { Model } from 'objection';
 import objectionUnique from 'objection-unique';
+import BaseModel from './BaseModel';
 
 import encrypt from '../lib/secure.js';
 
 const unique = objectionUnique({ fields: ['email'] });
 
-export default class User extends unique(Model) {
+export default class User extends unique(BaseModel) {
   static get tableName() {
     return 'users';
   }
@@ -34,11 +35,24 @@ export default class User extends unique(Model) {
     return encrypt(password) === this.passwordDigest;
   }
 
-  static get virtualAttributes() {
-    return ['fullName'];
-  }
-
-  fullName() {
-    return `${this.firstName} ${this.lastName}`;
+  static get relationMappings() {
+    return {
+      creatorUser: {
+        relation: BaseModel.HasManyRelation,
+        modelClass: 'User',
+        join: {
+          from: 'users.id',
+          to: 'tasks.creatorid',
+        },
+      },
+      executorUser: {
+        relation: BaseModel.HasManyRelation,
+        modelClass: 'User',
+        join: {
+          from: 'users.id',
+          to: 'tasks.executorId',
+        },
+      },
+    };
   }
 }

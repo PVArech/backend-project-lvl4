@@ -1,6 +1,6 @@
 
 exports.up = (knex) => (
-    knex.schema.createTable('task_status', (table) => {
+    knex.schema.createTable('statuses', (table) => {
       table.increments('id').primary();
       table.string('name');
       table.timestamp('created_at').defaultTo(knex.fn.now());
@@ -8,4 +8,4 @@ exports.up = (knex) => (
     })
   );
 
-exports.down = (knex) => knex.schema.dropTable('task_status');
+exports.down = (knex) => knex.schema.dropTable('statuses');

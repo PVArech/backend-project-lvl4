@@ -1,7 +1,7 @@
 - const getInputName = (property) => `data[${property}]`
 - const getInputId = (property) => `data_${property}`
 - const getLabelName = (property) => t(`views.labels.${property}`)
-- const buildRoute = (id, name) => `${route(name)}/${id}`
+- const getSelectText = (item) => (item.name) ? item.name : item.fullName()
 
 mixin formFor(entity = null)
   form&attributes(attributes)
@@ -13,16 +13,16 @@ mixin input(entity, propertyName, errors = {})
   - inputId = getInputId(propertyName)
   .mb-3(class=(errors[propertyName] && 'has-danger'))
     label(
-      for= inputId
+      for=inputId
     )= getLabelName(propertyName)
     input(
-      id= inputId
+      id=inputId
       name=getInputName(propertyName)
       class=classLine
       value=_.get(entity, propertyName, '')
     )&attributes(attributes)
     if !_.isEmpty(propertyErrors)
-      .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+      .form-control-feedback.invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
@@ -31,3 +31,34 @@ mixin buttonTo(action, method)
   form(action=action, method="post")
     input(name="_method" type="hidden" value=method)
     input(type='submit')&attributes(attributes)
+
+mixin textarea(entity, propertyName)
+  - classLine = 'form-control'
+  - inputId = getInputId(propertyName)
+  .mb-3(class=('has-danger'))
+    label(for=inputId)=getLabelName(propertyName)
+    textarea(
+      id= inputId
+      name=getInputName(propertyName)
+      class=classLine
+      rows=3
+    )= entity[propertyName]
+
+mixin select(entity, items, propertyName, errors = {})
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3(class=(errors[propertyName] && 'has-danger'))
+    label(
+      for=inputId
+    )=getLabelName(propertyName)
+    select(
+      id=inputId
+      name=getInputName(propertyName)
+      class=classLine      
+    )&attributes(attributes)
+      option
+      each item in items
+        option(value=item.id selected = item.id === Number(entity[propertyName]))=getSelectText(item)
+    if !_.isEmpty(propertyErrors)
+      .form-control-feedback.invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')

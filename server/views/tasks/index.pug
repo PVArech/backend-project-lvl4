@@ -1,0 +1,31 @@
+extends ../layouts/application.pug
+
+block content
+  a.nav-link(href=route('newTask'))= t('views.tasks.newTask')
+  table.table.table-striped
+    thead
+      tr
+        th= t('views.labels.id')
+        th= t('views.labels.name')
+        th= t('views.labels.status')
+        th= t('views.labels.creator')
+        th= t('views.labels.executor')
+        th= t('views.labels.createdAt')
+    tbody
+      each task in tasks
+        tr
+          td= task.id
+          td
+            a(href=`${route('task', { id: task.id })}`)= task.name
+          td= task.status.name
+          td= task.creatorUser.fullName()
+          if task.executorUser
+            td= task.executorUser.fullName()
+          else
+            td= null             
+          td= formatDate(task.createdAt)
+          td
+            a(href=`${route('editTask', {id: task.id})}`)= t('views.labels.edit')
+            +formFor()(action=route('task', { id: task.id }) method='post')            
+              input(name='_method' type='hidden' value='delete')
+              input.btn.btn-link(type='submit' value= t('views.labels.delete'))

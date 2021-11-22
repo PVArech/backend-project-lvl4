@@ -16,7 +16,7 @@ block content
           td= user.email
           td= formatDate(user.createdAt)
           td
-            a(href=`${buildRoute(user.id, 'users')}/edit`)= t('views.labels.edit')
-            +formFor()(action=buildRoute(user.id, 'users') method='post')            
+            a(href=`${route('editUser', {id: user.id})}`)= t('views.labels.edit')
+            +formFor()(action=route('user', { id: user.id }) method='post')            
               input(name='_method' type='hidden' value='delete')
               input.btn.btn-link(type='submit' value= t('views.labels.delete'))

@@ -13,7 +13,7 @@ export default (app) => {
       const user = new app.objection.models.user();
       reply.render('users/new', { user });
     })
-    .get('/users/:id/edit', { preValidation: app.authenticate }, async (req, reply) => {
+    .get('/users/:id/edit', { name: 'editUser', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
       if (Number(id) !== req.user.id) {
         req.flash('error', i18next.t('flash.users.delete.error'));
@@ -36,7 +36,7 @@ export default (app) => {
         return reply;
       }
     })
-    .patch('/users/:id', { preValidation: app.authenticate }, async (req, reply) => {
+    .patch('/users/:id', { name: 'user', preValidation: app.authenticate }, async (req, reply) => {
       try {
         const { id } = req.params;
         const changes = await app.objection.models.user.fromJson(req.body.data);
@@ -52,14 +52,21 @@ export default (app) => {
       }
     })
     .delete('/users/:id', { preValidation: app.authenticate }, async (req, reply) => {
-      const { id } = req.params;
-      if (Number(id) !== req.user.id) {
-        req.flash('error', i18next.t('flash.users.delete.error'));
+      try {
+        const { id } = req.params;
+        if (Number(id) !== req.user.id) {
+          req.flash('error', i18next.t('flash.users.delete.error'));
+          return reply.redirect(app.reverse('users'));
+        }
+        await app.objection.models.user.query().deleteById(id);
+        req.logOut();
+        req.flash('info', i18next.t('flash.users.delete.success'));
         return reply.redirect(app.reverse('users'));
+      } catch ({ data }) {
+        req.flash('error', i18next.t('flash.users.delete.errorForeign'));
+        const users = await app.objection.models.user.query();
+        reply.render('users/index', { users });
+        return reply;
       }
-      await app.objection.models.user.query().where({ id }).del();
-      req.logOut();
-      req.flash('info', i18next.t('flash.users.delete.success'));
-      return reply.redirect(app.reverse('users'));
     });
 };

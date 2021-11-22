@@ -23,6 +23,34 @@
       "new": { "name": "New status" },
       "existing": { "name": "в работе" },
       "edited": { "name": "новый статус" }
-    }
+    },
+    "tasks": {
+      "new": {
+        "name": "Task 4",
+        "description": "about task 4",
+        "statusId": 1,
+        "creatorId": 2,
+        "executorId": 3
+       },
+      "existing": {
+        "name": "Task 1",
+        "description": "about task 1",
+        "statusId": 1,
+        "creatorId": 1,
+        "executorId": 1        
+      },
+      "edited": {
+        "name": "Task 23",
+        "description": "about task 23",
+        "statusId": 2,
+        "creatorId": 2,
+        "executorId": 2   
+      }
+    },
+    "verbs": ["GET", "POST", "PATCH","DELETE"],
+    "routes": ["users", "statuses", "tasks"],    
+    "routesNew": ["newUser", "newStatus", "newTask"],
+    "routesEdit": ["editUser", "editStatus", "editTask"],
+    "routesId": ["user", "status", "task"]
   }
   
