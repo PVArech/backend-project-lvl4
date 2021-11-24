@@ -30,7 +30,8 @@
         "description": "about task 4",
         "statusId": 1,
         "creatorId": 2,
-        "executorId": 3
+        "executorId": 3,
+        "labels": [1, 9]
        },
       "existing": {
         "name": "Task 1",
@@ -47,10 +48,15 @@
         "executorId": 2   
       }
     },
+    "labels": {
+      "new": { "name": "New labels" },
+      "existing": { "name": "Existing labels" },
+      "edited": { "name": "Edited labels" }
+    },
     "verbs": ["GET", "POST", "PATCH","DELETE"],
-    "routes": ["users", "statuses", "tasks"],    
-    "routesNew": ["newUser", "newStatus", "newTask"],
-    "routesEdit": ["editUser", "editStatus", "editTask"],
-    "routesId": ["user", "status", "task"]
+    "routes": ["users", "statuses", "tasks", "labels"],    
+    "routesNew": ["newUser", "newStatus", "newTask", "newLabel"],
+    "routesEdit": ["editUser", "editStatus", "editTask", "editLabel"],
+    "routesId": ["user", "status", "task", "label"]
   }
   

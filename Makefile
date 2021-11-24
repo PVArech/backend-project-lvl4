@@ -21,4 +21,10 @@ test-coverage:
 	npm test -- --coverage --coverageProvider=v8
 test-updateSnapshot:
 	npm test --updateSnapshot
+migrate:
+	knex migrate:latest
+migrate-rollback:
+	npx knex migrate:rollback
+migrate-make:
+	npx knex migrate:make migration_name
 	

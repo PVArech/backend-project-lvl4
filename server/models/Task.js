@@ -23,25 +23,28 @@ export default class Task extends BaseModel {
 
   static get relationMappings() {
     return {
-      status: {
+      statuses: {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: 'Status',
-        join: {
-          from: 'tasks.statusId', to: 'statuses.id',
-        },
+        join: { from: 'tasks.statusId', to: 'statuses.id' },
       },
-      creatorUser: {
+      creatorUsers: {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: 'User',
-        join: {
-          from: 'tasks.creatorId', to: 'users.id',
-        },
+        join: { from: 'tasks.creatorId', to: 'users.id' },
       },
-      executorUser: {
+      executorUsers: {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: 'User',
+        join: { from: 'tasks.executorId', to: 'users.id' },
+      },
+      labels: {
+        relation: BaseModel.ManyToManyRelation,
+        modelClass: 'Label',
         join: {
-          from: 'tasks.executorId', to: 'users.id',
+          from: 'tasks.id',
+          through: { from: 'tasks_labels.taskId', to: 'tasks_labels.labelId' },
+          to: 'labels.id',
         },
       },
     };

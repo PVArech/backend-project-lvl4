@@ -1,7 +1,6 @@
 import { Model } from 'objection';
 import path from 'path';
 
-// models/BaseModel.js
 export default class BaseModel extends Model {
   static get modelPaths() {
     return [path.join(__dirname)];

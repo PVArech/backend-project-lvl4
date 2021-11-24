@@ -42,6 +42,20 @@ module.exports = {
           error: 'Не удалось удалить статус',
         },
       },
+      labels: {
+        create: {
+          success: 'Метка успешно создана',
+          error: 'Не удалось создать метку',
+        },
+        update: {
+          success: 'Метка успешно изменёна',
+          error: 'Не удалось изменить метку',
+        },
+        delete: {
+          success: 'Метка успешно удалена',
+          error: 'Не удалось удалить метку',
+        },
+      },
       tasks: {
         create: {
           success: 'Задача успешно создана',
@@ -63,6 +77,7 @@ module.exports = {
       application: {
         users: 'Пользователи',
         statuses: 'Статусы',
+        labels: 'Метки',
         tasks: 'Задачи',
         signIn: 'Вход',
         signUp: 'Регистрация',
@@ -71,6 +86,15 @@ module.exports = {
     },
     views: {
       labels: {
+        newLabel: 'Создать метку',
+        new: {
+          signUp: 'Создание метки',
+          submit: 'Создать',
+        },
+        edit: {
+          signUp: 'Изменение метки',
+          submit: 'Изменить',
+        },
         id: 'ID',
         fullName: 'Полное имя',
         firstName: 'Имя',
@@ -85,7 +109,8 @@ module.exports = {
         executor: 'Исполнитель',
         executorId: 'Исполнитель',
         description: 'Описание',
-        edit: 'Изменить',
+        labels: 'Метки',
+        change: 'Изменить',
         delete: 'Удалить',
       },
       session: {

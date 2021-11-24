@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`tests not Authenticated test GET /route/new GET /newLabel 1`] = `""`;
+
 exports[`tests not Authenticated test GET /route/new GET /newStatus 1`] = `""`;
 
 exports[`tests not Authenticated test GET /route/new GET /newTask 1`] = `""`;

@@ -8,6 +8,7 @@ block content
         th= t('views.labels.id')
         th= t('views.labels.name')
         th= t('views.labels.createdAt')
+        th
     tbody
       each status in statuses
         tr
@@ -15,7 +16,7 @@ block content
           td= status.name
           td= formatDate(status.createdAt)
           td
-            a(href=`${route('editStatus', {id: status.id})}`)= t('views.labels.edit')            
+            a(href=`${route('editStatus', {id: status.id})}`)= t('views.labels.change')            
             +formFor()(action=route('status', { id: status.id }) method='post')            
               input(name='_method' type='hidden' value='delete')
               input.btn.btn-link(type='submit' value= t('views.labels.delete'))

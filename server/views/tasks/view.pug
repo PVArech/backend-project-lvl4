@@ -12,23 +12,30 @@ block content
       .container
         .row.p-1
           .col= t('views.labels.creator')
-          .col= task.creatorUser.fullName()
+          .col= task.creatorUsers.fullName()
         .row.p-1
           .col= t('views.labels.executor')
-          if task.executorUser
-            .col= task.executorUser.fullName()
+          if task.executorUsers
+            .col= task.executorUsers.fullName()
           else
             .col= null
         .row.p-1
           .col= t('views.labels.status')
-          .col= task.status.name
+          .col= task.statuses.name
         .row.p-1
           .col= t('views.labels.createdAt')
           .col= task.createdAt
+        .row.p-1
+          .col
+            h6= `${t('views.labels.labels')}:`
+            ul
+              - const items = task.labels
+              each item in items
+                li= item.name
 
         .row.p-1
           .col
-            a(href=`${route('editTask', {id: task.id})}`)= t('views.labels.edit')
+            a(href=`${route('editTask', {id: task.id})}`)= t('views.labels.change')
             +formFor()(action=route('task', { id: task.id }) method='post')            
               input(name='_method' type='hidden' value='delete')
               input.btn.btn-link(type='submit' value= t('views.labels.delete'))  

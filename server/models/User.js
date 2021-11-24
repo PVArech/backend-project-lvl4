@@ -1,6 +1,5 @@
 // @ts-check
 
-// import { Model } from 'objection';
 import objectionUnique from 'objection-unique';
 import BaseModel from './BaseModel';
 
@@ -37,17 +36,17 @@ export default class User extends unique(BaseModel) {
 
   static get relationMappings() {
     return {
-      creatorUser: {
+      creatorUsers: {
         relation: BaseModel.HasManyRelation,
-        modelClass: 'User',
+        modelClass: 'Task',
         join: {
           from: 'users.id',
           to: 'tasks.creatorid',
         },
       },
-      executorUser: {
+      executorUsers: {
         relation: BaseModel.HasManyRelation,
-        modelClass: 'User',
+        modelClass: 'Task',
         join: {
           from: 'users.id',
           to: 'tasks.executorId',
