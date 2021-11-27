@@ -110,6 +110,7 @@ module.exports = {
         executorId: 'Исполнитель',
         description: 'Описание',
         labels: 'Метки',
+        label: 'Метка',
         change: 'Изменить',
         delete: 'Удалить',
       },
@@ -142,6 +143,8 @@ module.exports = {
       },
       tasks: {
         newTask: 'Создать задачу',
+        onlyMyTasks: 'Только мои задачи',
+        filterTasks: 'Показать',
         new: {
           signUp: 'Создание задачи',
           submit: 'Создать',

@@ -21,6 +21,30 @@ export default class Task extends BaseModel {
     };
   }
 
+  static get modifiers() {
+    return {
+      setFilterStatus(query, stutusId) {
+        if (stutusId) query.where('statusId', stutusId);
+      },
+      setFilterExecutorUser(query, executorId) {
+        if (executorId) query.where('executorId', executorId);
+      },
+      setFilterLabel(query, label) {
+        if (label) {
+          query.whereExists(function func() {
+            this.select('*')
+              .from('tasks_labels')
+              .whereRaw('tasks.id = tasks_labels.task_id')
+              .whereRaw('tasks_labels.label_id = ?', label);
+          });
+        }
+      },
+      setFilterCreatorUser(query, isCreatorUser, id) {
+        if (isCreatorUser) query.where('creatorId', id);
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       statuses: {

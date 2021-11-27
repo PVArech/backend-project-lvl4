@@ -5,13 +5,32 @@ import i18next from 'i18next';
 export default (app) => {
   app
     .get('/tasks', { name: 'tasks', preValidation: app.authenticate }, async (req, reply) => {
+      const {
+        status,
+        executor,
+        label,
+        isCreatorUser,
+      } = reply.request.query;
       const tasks = await app.objection.models.task.query()
-        .withGraphFetched({
-          statuses: true,
-          creatorUsers: true,
-          executorUsers: true,
-        });
-      reply.render('tasks/index', { tasks });
+        // .withGraphJoined('[statuses, creatorUsers, executorUsers, labels]')
+        .withGraphFetched('[statuses, creatorUsers, executorUsers, labels]')
+        .modify('setFilterStatus', status)
+        .modify('setFilterExecutorUser', executor)
+        .modify('setFilterLabel', label)
+        .modify('setFilterCreatorUser', isCreatorUser, req.user.id);
+      const users = await app.objection.models.user.query();
+      const statuses = await app.objection.models.status.query();
+      const labels = await app.objection.models.label.query();
+      tasks.status = status;
+      tasks.executor = executor;
+      tasks.label = label;
+      tasks.isCreatorUser = isCreatorUser;
+      reply.render('tasks/index', {
+        tasks,
+        users,
+        statuses,
+        labels,
+      });
       return reply;
     })
     .get('/tasks/new', { name: 'newTask', preValidation: app.authenticate }, async (req, reply) => {

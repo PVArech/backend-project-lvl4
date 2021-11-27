@@ -2,6 +2,21 @@ extends ../layouts/application.pug
 
 block content
   a.nav-link(href=route('newTask'))= t('views.tasks.newTask')
+  .card
+    .card-body.p-2.bg-light
+      +formFor()(action=route('tasks') method='get')
+        .row
+          .col
+            +select(tasks, statuses, 'status')(class= 'ml-2 mr-3' name= 'status')
+          .col  
+            +select(tasks, users, 'executor')(class= 'ml-2 mr-3' name= 'executor')
+          .col
+            +select(tasks, labels, 'label')(class= 'ml-2 mr-3' name= 'label')
+        .mb-3.form-check
+          input.form-check-input(id= "data_isCreatorUser" type="checkbox" name= "isCreatorUser" checked= tasks.isCreatorUser)
+          label.form-check-label(for= "data_isCreatorUser")= t('views.tasks.onlyMyTasks')
+        input.btn.btn-primary.ml-3(type="submit" value= t('views.tasks.filterTasks'))
+    
   table.table.table-striped
     thead
       tr
@@ -27,6 +42,6 @@ block content
           td= formatDate(task.createdAt)
           td
             a(href=`${route('editTask', {id: task.id})}`)= t('views.labels.change')
-            +formFor()(action=route('task', { id: task.id }) method='post')            
+            +formFor()(action=route('task', { id: task.id }) method='post')
               input(name='_method' type='hidden' value='delete')
               input.btn.btn-link(type='submit' value= t('views.labels.delete'))

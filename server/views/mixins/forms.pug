@@ -60,7 +60,7 @@ mixin select(entity, items, propertyName, errors = {})
       if propertyName !== 'labels'
         option
         each item in items
-          option(value=item.id selected= item.id === Number(entity[propertyName]))=getSelectText(item)        
+          option(value=item.id selected= item.id === Number(entity[propertyName]))=getSelectText(item)
       else
         each item in items
           -const { labels } = entity
