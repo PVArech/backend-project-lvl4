@@ -24,10 +24,10 @@ export default class Task extends BaseModel {
   static get modifiers() {
     return {
       setFilterStatus(query, stutusId) {
-        if (stutusId) query.where('statusId', stutusId);
+        return stutusId ? query.where('statusId', stutusId) : '';
       },
       setFilterExecutorUser(query, executorId) {
-        if (executorId) query.where('executorId', executorId);
+        return (executorId) ? query.where('executorId', executorId) : '';
       },
       setFilterLabel(query, label) {
         if (label) {
@@ -40,7 +40,7 @@ export default class Task extends BaseModel {
         }
       },
       setFilterCreatorUser(query, isCreatorUser, id) {
-        if (isCreatorUser) query.where('creatorId', id);
+        return isCreatorUser ? query.where('creatorId', id) : '';
       },
     };
   }
