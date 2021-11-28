@@ -4,15 +4,6 @@ import i18next from 'i18next';
 
 export default (app) => {
   app
-    .get('/users', { name: 'users' }, async (req, reply) => {
-      const users = await app.objection.models.user.query();
-      reply.render('users/index', { users });
-      return reply;
-    })
-    .get('/users/new', { name: 'newUser' }, (req, reply) => {
-      const user = new app.objection.models.user();
-      reply.render('users/new', { user });
-    })
     .get('/users/:id/edit', { name: 'editUser', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
       if (Number(id) !== req.user.id) {

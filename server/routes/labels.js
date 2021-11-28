@@ -2,16 +2,6 @@ import i18next from 'i18next';
 
 export default (app) => {
   app
-    .get('/labels', { name: 'labels', preValidation: app.authenticate }, async (req, reply) => {
-      const labels = await app.objection.models.label.query();
-      reply.render('labels/index', { labels });
-      return reply;
-    })
-    .get('/labels/new', { name: 'newLabel', preValidation: app.authenticate }, async (req, reply) => {
-      const label = new app.objection.models.label();
-      reply.render('labels/new', { label });
-      return reply;
-    })
     .get('/labels/:id/edit', { name: 'editLabel', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
       const [label] = await app.objection.models.label.query().where({ id });
