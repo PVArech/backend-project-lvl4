@@ -23,11 +23,8 @@ export default class Task extends BaseModel {
 
   static get modifiers() {
     return {
-      setFilterStatus(query, stutusId) {
-        return stutusId ? query.where('statusId', stutusId) : '';
-      },
-      setFilterExecutorUser(query, executorId) {
-        return (executorId) ? query.where('executorId', executorId) : '';
+      setFilter(query, filter) {
+        return filter.map(([name, value]) => (value ? query.where(name, value) : ''));
       },
       setFilterLabel(query, label) {
         if (label) {

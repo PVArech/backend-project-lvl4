@@ -11,13 +11,14 @@ export default (app) => {
         label,
         isCreatorUser,
       } = reply.request.query;
+      const filter = [['statusId', status], ['executorId', executor]];
       const tasks = await app.objection.models.task.query()
         // .withGraphJoined('[statuses, creatorUsers, executorUsers, labels]')
         .withGraphFetched('[statuses, creatorUsers, executorUsers, labels]')
-        .modify('setFilterStatus', status)
-        .modify('setFilterExecutorUser', executor)
+        .modify('setFilter', filter)
         .modify('setFilterLabel', label)
         .modify('setFilterCreatorUser', isCreatorUser, req.user.id);
+
       const users = await app.objection.models.user.query();
       const statuses = await app.objection.models.status.query();
       const labels = await app.objection.models.label.query();
