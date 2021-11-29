@@ -34,24 +34,24 @@ export default class User extends unique(BaseModel) {
     return encrypt(password) === this.passwordDigest;
   }
 
-  static get relationMappings() {
-    return {
-      creatorUsers: {
-        relation: BaseModel.HasManyRelation,
-        modelClass: 'Task',
-        join: {
-          from: 'users.id',
-          to: 'tasks.creatorid',
-        },
-      },
-      executorUsers: {
-        relation: BaseModel.HasManyRelation,
-        modelClass: 'Task',
-        join: {
-          from: 'users.id',
-          to: 'tasks.executorId',
-        },
-      },
-    };
-  }
+  // static get relationMappings() {
+  //   return {
+  //     creatorUsers: {
+  //       relation: BaseModel.HasManyRelation,
+  //       modelClass: 'Task',
+  //       join: {
+  //         from: 'users.id',
+  //         to: 'tasks.creatorid',
+  //       },
+  //     },
+  //     executorUsers: {
+  //       relation: BaseModel.HasManyRelation,
+  //       modelClass: 'Task',
+  //       join: {
+  //         from: 'users.id',
+  //         to: 'tasks.executorId',
+  //       },
+  //     },
+  //   };
+  // }
 }

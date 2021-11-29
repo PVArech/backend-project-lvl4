@@ -21,20 +21,20 @@ export default class Label extends unique(BaseModel) {
     };
   }
 
-  static get relationMappings() {
-    return {
-      tasks: {
-        relation: BaseModel.ManyToManyRelation,
-        modelClass: 'Task',
-        join: {
-          from: 'labels.id',
-          through: {
-            from: 'tasks_labels.labelId',
-            to: 'tasks_labels.taskId',
-          },
-          to: 'tasks.id',
-        },
-      },
-    };
-  }
+  // static get relationMappings() {
+  //   return {
+  //     tasks: {
+  //       relation: BaseModel.ManyToManyRelation,
+  //       modelClass: 'Task',
+  //       join: {
+  //         from: 'labels.id',
+  //         through: {
+  //           from: 'tasks_labels.labelId',
+  //           to: 'tasks_labels.taskId',
+  //         },
+  //         to: 'tasks.id',
+  //       },
+  //     },
+  //   };
+  // }
 }

@@ -21,16 +21,16 @@ export default class Status extends unique(BaseModel) {
     };
   }
 
-  static get relationMappings() {
-    return {
-      tasks: {
-        relation: BaseModel.HasManyRelation,
-        modelClass: 'Task',
-        join: {
-          from: 'statuses.id',
-          to: 'tasks.statusId',
-        },
-      },
-    };
-  }
+  // static get relationMappings() {
+  //   return {
+  //     tasks: {
+  //       relation: BaseModel.HasManyRelation,
+  //       modelClass: 'Task',
+  //       join: {
+  //         from: 'statuses.id',
+  //         to: 'tasks.statusId',
+  //       },
+  //     },
+  //   };
+  // }
 }
