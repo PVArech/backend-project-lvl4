@@ -3,10 +3,7 @@
 import i18next from 'i18next';
 
 export default (app) => {
-  const modifyLabels = (changes) => {
-    const data = changes;
-    data.labels = [...changes.labels].map((value) => ({ id: value }));
-  };
+  const modifyLabels = ({ labels }) => (labels ? [...labels].map((value) => ({ id: value })) : '');
   app
     .get('/tasks', { name: 'tasks', preValidation: app.authenticate }, async (req, reply) => {
       const {
@@ -60,11 +57,7 @@ export default (app) => {
           executorId: req.body.data.executorId || null,
         };
         const changes = await app.objection.models.task.fromJson(task);
-
-        // if (changes.labels) {
-        //   changes.labels = [...changes.labels].map((value) => ({ id: value }));
-        // }
-        modifyLabels(changes);
+        changes.labels = modifyLabels(changes);
 
         await app.objection.models.task.transaction(async (trx) => {
           await app.objection.models.task.query(trx).insertGraph([changes], { relate: ['labels'] });
@@ -128,7 +121,7 @@ export default (app) => {
           id: Number(id),
         };
         const changes = await app.objection.models.task.fromJson(task);
-        modifyLabels(changes);
+        changes.labels = modifyLabels(changes);
 
         await app.objection.models.task.transaction(async (trx) => {
           await app.objection.models.task.query(trx).upsertGraph(changes, {
