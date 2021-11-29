@@ -3,12 +3,17 @@
 import i18next from 'i18next';
 
 export default (app) => {
+  const isCurrentUser = (req) => (Number(req.params.id) === req.user.id);
+  const setFlash = (req, reply) => {
+    req.flash('error', i18next.t('flash.users.delete.error'));
+    reply.redirect(app.reverse('users'));
+  };
   app
     .get('/users/:id/edit', { name: 'editUser', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
-      if (Number(id) !== req.user.id) {
-        req.flash('error', i18next.t('flash.users.delete.error'));
-        return reply.redirect(app.reverse('users'));
+      if (!isCurrentUser(req)) {
+        setFlash(req, reply);
+        return reply;
       }
       const [user] = await app.objection.models.user.query().where({ id });
       reply.render('users/edit', { user });
@@ -45,9 +50,9 @@ export default (app) => {
     .delete('/users/:id', { preValidation: app.authenticate }, async (req, reply) => {
       try {
         const { id } = req.params;
-        if (Number(id) !== req.user.id) {
-          req.flash('error', i18next.t('flash.users.delete.error'));
-          return reply.redirect(app.reverse('users'));
+        if (!isCurrentUser(req)) {
+          setFlash(req, reply);
+          return reply;
         }
         await app.objection.models.user.query().deleteById(id);
         req.logOut();

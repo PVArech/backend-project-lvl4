@@ -11,7 +11,7 @@ const maps = {
 };
 
 export default (app) => {
-  const setPreValidation = (item) => (item === 'users' ? null : app.authenticate);
+  const setPreValidation = (item) => (item === 'users' ? false : app.authenticate);
 
   items.forEach((item) => {
     app
